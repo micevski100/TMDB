@@ -1,0 +1,55 @@
+.header {
+  max-width: 60rem;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+}
+
+.brandAndToggler {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  cursor: pointer;
+  font-size: 1.8em;
+  margin-left: 20px;
+  vertical-align: middle;
+  height: 40px !important;
+  width: 100px !important;
+}
+
+.toggler {
+  margin-left: 10px; /* Adjust as needed */
+  font-size: 16px;
+  background-color: transparent;
+  border: none;
+}
+
+.togglerText {
+  color: white; /* Adjust this to your desired color */
+  display: flex;
+  align-items: center;
+}
+
+.chevronIcon {
+  margin-left: 10px; /* Adjust as needed */
+}
+
+.list {
+  display: flex;
+  gap: 1rem;
+}
+
+.list a {
+  text-decoration: none;
+  color: #e5e5e5;
+}
+
+.list a:hover,
+.list a.active {
+  font-weight: bold;
+  color: #fff;
+}
