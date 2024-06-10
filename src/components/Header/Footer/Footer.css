@@ -1,0 +1,13 @@
+/* Ensure rows stack on top of each other */
+.social-icons-row,
+.links-row {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Optional: Ensure columns take full width in smaller screens */
+@media (max-width: 768px) {
+  .links-row .col {
+    width: 100%;
+  }
+}

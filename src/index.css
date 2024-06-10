@@ -2,6 +2,7 @@
 
 * {
   box-sizing: border-box;
+  color: white;
 }
 
 body {
@@ -50,4 +51,9 @@ main {
 .btn:hover {
   background-color: transparent;
   border: transparent;
+}
+
+footer a {
+  color: grey;
+  text-decoration: none;
 }
