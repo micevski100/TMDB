@@ -1,5 +1,6 @@
 .header {
-  max-width: 60rem;
+  /* max-width: 60rem; */
+  height: 70px;
 }
 
 .navbar {
@@ -52,4 +53,30 @@
 .list a.active {
   font-weight: bold;
   color: #fff;
+}
+
+.navbarRightItem {
+  margin-right: 10px;
+  background-color: transparent;
+  border: transparent;
+}
+
+.navbarRightItem > svg {
+  width: 20px;
+  height: 20px;
+}
+
+@media (max-width: 576px) {
+  .navbarRightItem {
+    margin-right: 5px;
+  }
+
+  .navbarRightItem > svg {
+    width: 15;
+    height: 15px;
+  }
+
+  #search {
+    background-color: rebeccapurple;
+  }
 }

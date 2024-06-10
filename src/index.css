@@ -38,3 +38,16 @@ main {
 .errorPage {
   text-align: center;
 }
+
+.btn {
+  font-size: 20px;
+  color: white;
+  cursor: pointer;
+  background-color: transparent;
+  border: transparent;
+}
+
+.btn:hover {
+  background-color: transparent;
+  border: transparent;
+}

@@ -5,7 +5,12 @@ import logoImg from "../../assets/logo.png";
 
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
+import Dropdown from "react-bootstrap/Dropdown";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import { ChevronDown } from "react-bootstrap-icons";
+import SearchButton from "../SearchButton/SearchButton";
+import { faBell, faUser } from "@fortawesome/free-solid-svg-icons";
 
 const MainNavigation = () => {
   return (
@@ -68,6 +73,28 @@ const MainNavigation = () => {
             </NavLink>
           </Nav>
         </Navbar.Collapse>
+        <div className={`me-5 ${classes.list}`}>
+          <SearchButton />
+          <button className='btn'>
+            <FontAwesomeIcon icon={faBell} />
+          </button>
+          <Dropdown data-bs-theme='dark' align='end'>
+            <Dropdown.Toggle variant='success' className='btn'>
+              <FontAwesomeIcon icon={faUser} />
+            </Dropdown.Toggle>
+
+            <Dropdown.Menu>
+              <Dropdown.Item href='#'>User 1</Dropdown.Item>
+              <Dropdown.Item href='#'>User 2</Dropdown.Item>
+              <Dropdown.Item href='#'>User 3</Dropdown.Item>
+              <Dropdown.Item href='#'>User 4</Dropdown.Item>
+              <Dropdown.Item href='#'>Manage Profile</Dropdown.Item>
+              <Dropdown.Item href='#'>Transfer Profile</Dropdown.Item>
+              <Dropdown.Item href='#'>Account</Dropdown.Item>
+              <Dropdown.Item href='#'>Help Center</Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+        </div>
       </Navbar>
     </header>
   );
