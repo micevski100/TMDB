@@ -7,7 +7,7 @@ import "./Footer.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const Footer = () => {
   return (
-    <footer className='text-center text-lg-start text-muted'>
+    <footer className='text-center text-lg-start text-muted mt-5'>
       <section>
         <div className='container'>
           <div className='row w-100'>
@@ -69,12 +69,7 @@ const Footer = () => {
       <div
         className='text-center p-4'
         style={{ backgroundColor: "rgba(0, 0, 0, 0.05)" }}
-      >
-        © 2021 Copyright:
-        <a className='text-reset fw-bold' href='https://mdbootstrap.com/'>
-          MDBootstrap.com
-        </a>
-      </div>
+      ></div>
     </footer>
   );
 };

@@ -32,8 +32,12 @@ ul {
   padding: 0;
 }
 
-main {
-  margin: 2rem auto;
+.main__default {
+  margin: 0 auto;
+}
+
+.main__full__panel {
+  margin-top: -70px;
 }
 
 .errorPage {

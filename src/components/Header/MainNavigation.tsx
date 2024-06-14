@@ -17,7 +17,7 @@ const MainNavigation = () => {
     <header className={classes.header}>
       <Navbar expand='lg' className={classes.navbar}>
         <div className={classes.brandAndToggler}>
-          <Navbar.Brand>
+          <Navbar.Brand className='ms-4'>
             <NavLink to='/'>
               <img src={logoImg} className={classes.logo} alt='Logo' />
             </NavLink>

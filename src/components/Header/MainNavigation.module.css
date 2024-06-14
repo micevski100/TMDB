@@ -1,6 +1,11 @@
 .header {
   /* max-width: 60rem; */
-  height: 70px;
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: auto;
+  min-height: 70px;
+  z-index: 1;
 }
 
 .navbar {
