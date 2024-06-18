@@ -7,6 +7,7 @@ import SeriesPage from "./pages/Series";
 import FilmsPage from "./pages/Films";
 import LatestPage from "./pages/Latest";
 import MyListPage from "./pages/MyList";
+import SearchPage from "./pages/Search";
 
 const router = createBrowserRouter([
   {
@@ -19,6 +20,7 @@ const router = createBrowserRouter([
       { path: "/films", element: <FilmsPage /> },
       { path: "/latest", element: <LatestPage /> },
       { path: "/myList", element: <MyListPage /> },
+      { path: "/search", element: <SearchPage /> },
     ],
   },
 ]);
