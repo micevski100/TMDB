@@ -21,6 +21,37 @@
   transition: transform 450ms;
 }
 
+.card__container {
+  position: relative;
+}
+
+.card__container img {
+  width: 100%;
+  height: auto;
+}
+
+.card__container .btn {
+  position: absolute;
+  top: 80%;
+  left: 90%;
+  width: 35px;
+  height: 35px;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  background-color: #555;
+  color: white;
+  font-size: 16px;
+  padding: 0px;
+  border: none;
+  cursor: pointer;
+  border-radius: 25px;
+  text-align: center;
+}
+
+.card__container .btn:hover {
+  background-color: green;
+}
+
 /* .row__poster:hover {
   transform: scale(1.5);
 } */

@@ -33,11 +33,11 @@ const HomePage = () => {
     return allMovies[Math.floor(Math.random() * allMovies.length)];
   };
 
-  const randomMovie = getRandomMovie(); // Call getRandomMovie here
+  const randomMovie = getRandomMovie();
 
   return (
     <>
-      <Banner movie={randomMovie} /> {/* Pass randomMovie directly */}
+      <Banner movie={randomMovie} />
       <div className='ms-5'>
         {movies.map(([categoryName, movieList]) => (
           <Row key={categoryName} title={categoryName} movies={movieList} />

@@ -14,54 +14,45 @@ class ApiManager {
       baseURL: BASE_URL,
       headers: {
         "Content-Type": "application/json",
-        Authorization: `${API_KEY}`,
+        Authorization: `Bearer ${API_KEY}`,
       },
       timeout: 20000,
     });
   }
 
-  private _get = (url: string, config = {}) => {
-    return this.client.get(url, config);
-  };
-
-  private _put = (url: string, data = {}, config = {}) => {
-    return this.client.put(url, data, config);
-  };
-
-  private _post = (url: string, data = {}, config = {}) => {
-    return this.client.post(url, data, config);
-  };
-
-  async discoverMovies(): Promise<Result<MoviesResult>> {
+  private async makeRequest<T>(url: string, config = {}): Promise<Result<T>> {
     try {
-      const response = await this._get("/discover/movie", {
-        params: { api_key: API_KEY },
-      });
-      const moviesResult = response.data as MoviesResult;
-      return Result.ok<MoviesResult>(moviesResult);
-    } catch (e: any) {
-      if (e.response) {
-        return Result.fail<MoviesResult>(e.response.data.message);
-      } else {
-        return Result.fail<MoviesResult>(e.message);
+      const response = await this.client.get(url, config);
+      const data = response.data as T;
+      if (!data) {
+        throw new Error("No data received from the API");
       }
+      return Result.ok<T>(data);
+    } catch (e: any) {
+      return this.handleError<T>(e);
     }
   }
 
-  async discoverTVShows(): Promise<Result<MoviesResult>> {
-    try {
-      const response = await this._get("/discover/tv", {
-        params: { api_key: API_KEY },
-      });
-      const moviesResult = response.data as MoviesResult;
-      return Result.ok<MoviesResult>(moviesResult);
-    } catch (e: any) {
-      if (e.response) {
-        return Result.fail<MoviesResult>(e.response.data.message);
-      } else {
-        return Result.fail<MoviesResult>(e.message);
-      }
+  private handleError<T>(e: any): Result<T> {
+    console.error("API Error:", e);
+    if (e.response) {
+      console.error("Response Data:", e.response.data);
+      return Result.fail<T>(e.response.data.message);
+    } else {
+      return Result.fail<T>(e.message);
     }
+  }
+
+  async discoverMovies(): Promise<Result<MoviesResult>> {
+    return this.makeRequest<MoviesResult>("/discover/movie", {
+      params: { api_key: API_KEY },
+    });
+  }
+
+  async discoverTVShows(): Promise<Result<MoviesResult>> {
+    return this.makeRequest<MoviesResult>("/discover/tv", {
+      params: { api_key: API_KEY },
+    });
   }
 
   async search(query: string): Promise<Result<MoviesResult>> {
@@ -73,7 +64,7 @@ class ApiManager {
     try {
       const responses = await Promise.all(
         requestUrls.map((url) =>
-          this._get(url, { params: { api_key: API_KEY } })
+          this.client.get(url, { params: { api_key: API_KEY } })
         )
       );
 
@@ -90,46 +81,47 @@ class ApiManager {
 
       return Result.ok<MoviesResult>(result);
     } catch (e: any) {
-      if (e.response) {
-        return Result.fail<MoviesResult>(e.response.data.message);
-      } else {
-        return Result.fail<MoviesResult>(e.message);
-      }
+      return this.handleError<MoviesResult>(e);
     }
   }
 
   async getMovieRecommendations(): Promise<Result<[string, MoviesResult][]>> {
     const requests = [
-      { name: "Popular Movies", url: "/movie/popular?language=en-US" },
-      { name: "Top Rated Movies", url: "/movie/top_rated?language=en-US" },
-      { name: "Now Playing", url: "/movie/now_playing?language=en-US" },
-      { name: "Popular Series", url: "/tv/popular?language=en-US" },
-      { name: "Top Rated Series", url: "/tv/top_rated?language=en-US" },
-      { name: "Airing Today", url: "/tv/airing_today?language=en-US" },
+      { name: "Popular Movies", url: "/movie/popular" },
+      { name: "Top Rated Movies", url: "/movie/top_rated" },
+      { name: "Now Playing", url: "/movie/now_playing" },
+      { name: "Popular Series", url: "/tv/popular" },
+      { name: "Top Rated Series", url: "/tv/top_rated" },
+      { name: "Airing Today", url: "/tv/airing_today" },
     ];
 
     try {
       const responses = await Promise.all(
         requests.map((request) =>
-          this._get(request.url, { params: { api_key: API_KEY } }).then(
-            (response) => ({
-              name: request.name,
-              data: response.data as MoviesResult,
-            })
-          )
+          this.makeRequest<MoviesResult>(request.url, {
+            params: { api_key: API_KEY, language: "en-US" },
+          }).then((result) => ({
+            name: request.name,
+            result,
+          }))
         )
       );
 
-      const resultTuples = responses.map(
-        (response) => [response.name, response.data] as [string, MoviesResult]
-      );
+      const resultTuples = responses.map((response) => {
+        if (response.result.isFailure) {
+          console.error(
+            `Failed to fetch ${response.name}: ${response.result.errorValue}`
+          );
+        }
+        return [response.name, response.result.getValue()] as [
+          string,
+          MoviesResult
+        ];
+      });
+
       return Result.ok(resultTuples);
     } catch (e: any) {
-      if (e.response) {
-        return Result.fail<[string, MoviesResult][]>(e.response.data.message);
-      } else {
-        return Result.fail<[string, MoviesResult][]>(e.message);
-      }
+      return this.handleError<[string, MoviesResult][]>(e);
     }
   }
 }
