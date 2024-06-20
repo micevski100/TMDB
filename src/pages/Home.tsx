@@ -8,19 +8,31 @@ type MovieCategoryTuple = [string, Movie[]];
 
 const HomePage = () => {
   const [movies, setMovies] = useState<MovieCategoryTuple[]>([]);
+  const [error, setError] = useState("");
+
   useEffect(() => {
     (async () => {
-      const result = await ApiManager.shared.getMovieRecommendations();
-      if (result.isSuccess && result.getValue()) {
-        const movieCategories = result
-          .getValue()!
-          .map(
-            ([categoryName, moviesResult]) =>
-              [categoryName, moviesResult.results] as MovieCategoryTuple
+      setError("");
+      try {
+        const result = await ApiManager.shared.getMovieRecommendations();
+        if (result.isSuccess && result.getValue()) {
+          const movieCategories = result
+            .getValue()!
+            .map(
+              ([categoryName, moviesResult]) =>
+                [categoryName, moviesResult.results] as MovieCategoryTuple
+            );
+          setMovies(movieCategories);
+        } else {
+          console.error(
+            "Failed to fetch recommended Movies and TV-Shows.",
+            result.errorValue
           );
-        setMovies(movieCategories);
-      } else {
-        console.error("Failed to fetch movie categories:", result.errorValue);
+          setError("Failed to fetch recommended Movies and TV-Shows.");
+        }
+      } catch (error) {
+        console.error("Failed to fetch recommended Movies and TV-Shows.");
+        setError("Failed to fetch recommended Movies and TV-Shows.");
       }
     })();
   }, []);
@@ -37,12 +49,17 @@ const HomePage = () => {
 
   return (
     <>
-      <Banner movie={randomMovie} />
-      <div className='ms-5'>
-        {movies.map(([categoryName, movieList]) => (
-          <Row key={categoryName} title={categoryName} movies={movieList} />
-        ))}
-      </div>
+      {error && <h1 className='text-center mt-5'>{error}</h1>}
+      {!error && (
+        <>
+          <Banner movie={randomMovie} />
+          <div className='ms-5'>
+            {movies.map(([categoryName, movieList]) => (
+              <Row key={categoryName} title={categoryName} movies={movieList} />
+            ))}
+          </div>
+        </>
+      )}
     </>
   );
 };

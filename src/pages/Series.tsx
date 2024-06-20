@@ -28,7 +28,7 @@ const SeriesPage = () => {
   return (
     <div>
       <h1 className='ms-5'>TV Shows</h1>
-      {error && <p>{error}</p>}
+      {error && <h1 className='text-center mt-5'>{error}</h1>}
       {!error && <CardsList movies={movies} />}
     </div>
   );

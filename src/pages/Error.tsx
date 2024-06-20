@@ -4,7 +4,7 @@ const ErrorPage = () => {
   return (
     <>
       <MainNavigation />
-      <main className='errorPage'>
+      <main className='text-center mt-5'>
         <h1>An error occured!</h1>
         <p>Could not find this page!</p>
       </main>
