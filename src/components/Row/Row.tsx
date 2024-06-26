@@ -2,8 +2,6 @@ import "./Row.css";
 import { Movie } from "../../services/models/Movie";
 import Card from "../Card";
 
-const base_url = "https://image.tmdb.org/t/p/original";
-
 const Row: React.FC<{ title: string; movies: Movie[] }> = ({
   title,
   movies,

@@ -15,7 +15,7 @@ import { faBell, faUser } from "@fortawesome/free-solid-svg-icons";
 const MainNavigation = () => {
   return (
     <header className={classes.header}>
-      <Navbar expand='lg' className={classes.navbar}>
+      <Navbar expand='md' className={classes.navbar}>
         <div className={classes.brandAndToggler}>
           <Navbar.Brand className='ms-4'>
             <NavLink to='/'>

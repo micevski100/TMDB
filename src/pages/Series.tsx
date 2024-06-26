@@ -1,37 +1,35 @@
-import { useState, useEffect } from "react";
-import CardsList from "../components/CardsList";
-import { Movie } from "../services/models/Movie";
+import { json, useLoaderData } from "react-router-dom";
+
 import ApiManager from "../services/api/ApiManager";
+import { MoviesResult } from "../services/models/Movie";
+import CardsList from "../components/CardsList";
+import { Result } from "../services/api/Result";
 
 const SeriesPage = () => {
-  const [movies, setMovies] = useState<Movie[]>([]);
-  const [error, setError] = useState("");
-
-  useEffect(() => {
-    (async () => {
-      setError("");
-      try {
-        const result = await ApiManager.shared.discoverTVShows();
-        if (result.isSuccess && result.getValue()) {
-          setMovies(result.getValue()!.results);
-        } else {
-          console.error("Failed to fetch tv-shows:", result.errorValue);
-          setError("Failed to fetch tv-shows");
-        }
-      } catch (error) {
-        console.error("Error fetching tv-shows:", error);
-        setError("Failed to fetch tv-shows.");
-      }
-    })();
-  }, []);
+  const data = useLoaderData() as Result<MoviesResult>;
+  const series = data.getValue()?.results || [];
 
   return (
     <div>
-      <h1 className='ms-5'>TV Shows</h1>
-      {error && <h1 className='text-center mt-5'>{error}</h1>}
-      {!error && <CardsList movies={movies} />}
+      <CardsList movies={series} />
     </div>
   );
 };
 
 export default SeriesPage;
+
+export const loader = async () => {
+  try {
+    const response: Result<MoviesResult> =
+      await ApiManager.shared.discoverTVShows();
+    if (response.isSuccess) {
+      console.log(response);
+      return response;
+    } else {
+      return json({ message: "Could not fetch tv-shows" }, { status: 500 });
+    }
+  } catch (error) {
+    console.error("Failed to fetch tv-shows.");
+    return json({ message: "Failed to fetch tv-shows." }, { status: 500 });
+  }
+};

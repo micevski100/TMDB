@@ -1,44 +1,17 @@
-import { useEffect, useState } from "react";
+import { useLoaderData, json } from "react-router-dom";
 import ApiManager from "../services/api/ApiManager";
 import { Movie } from "../services/models/Movie";
 import Row from "../components/Row/Row";
 import Banner from "../components/Banner/Banner";
-
-type MovieCategoryTuple = [string, Movie[]];
+import { Result } from "../services/api/Result";
+import { MoviesResult } from "../services/models/Movie";
 
 const HomePage = () => {
-  const [movies, setMovies] = useState<MovieCategoryTuple[]>([]);
-  const [error, setError] = useState("");
-
-  useEffect(() => {
-    (async () => {
-      setError("");
-      try {
-        const result = await ApiManager.shared.getMovieRecommendations();
-        if (result.isSuccess && result.getValue()) {
-          const movieCategories = result
-            .getValue()!
-            .map(
-              ([categoryName, moviesResult]) =>
-                [categoryName, moviesResult.results] as MovieCategoryTuple
-            );
-          setMovies(movieCategories);
-        } else {
-          console.error(
-            "Failed to fetch recommended Movies and TV-Shows.",
-            result.errorValue
-          );
-          setError("Failed to fetch recommended Movies and TV-Shows.");
-        }
-      } catch (error) {
-        console.error("Failed to fetch recommended Movies and TV-Shows.");
-        setError("Failed to fetch recommended Movies and TV-Shows.");
-      }
-    })();
-  }, []);
+  const data = useLoaderData() as Result<[string, MoviesResult][]>;
+  const movies = data.getValue() as [string, MoviesResult][];
 
   const getRandomMovie = (): Movie | undefined => {
-    const allMovies = movies.flatMap(([, movies]) => movies);
+    const allMovies = movies.flatMap(([, movies]) => movies.results);
     if (allMovies.length === 0) {
       return undefined;
     }
@@ -49,19 +22,40 @@ const HomePage = () => {
 
   return (
     <>
-      {error && <h1 className='text-center mt-5'>{error}</h1>}
-      {!error && (
-        <>
-          <Banner movie={randomMovie} />
-          <div className='ms-5'>
-            {movies.map(([categoryName, movieList]) => (
-              <Row key={categoryName} title={categoryName} movies={movieList} />
-            ))}
-          </div>
-        </>
-      )}
+      <Banner movie={randomMovie} />
+      <div className='ms-5'>
+        {movies.map(([categoryName, movieList]) => (
+          <Row
+            key={categoryName}
+            title={categoryName}
+            movies={movieList.results}
+          />
+        ))}
+      </div>
     </>
   );
 };
 
 export default HomePage;
+
+export const loader = async () => {
+  try {
+    const response: Result<[string, MoviesResult][]> =
+      await ApiManager.shared.getMovieRecommendations();
+
+    if (response.isSuccess) {
+      return response;
+    } else {
+      return json(
+        { message: "Could not fetch movie recommendations." },
+        { status: 500 }
+      );
+    }
+  } catch (error) {
+    console.error("Failed to fetch recommended Movies and TV-Shows.");
+    return json(
+      { message: "Failed to fetch recommended Movies and TV-Shows." },
+      { status: 500 }
+    );
+  }
+};

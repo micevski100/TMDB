@@ -13,7 +13,7 @@ const SearchButton = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!active && inputRef) {
+    if (!active && inputRef.current) {
       inputRef.current.value = "";
     }
   }, [active]);
