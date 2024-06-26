@@ -1,15 +1,14 @@
 import { lazy, Suspense } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 
 import RootLayout from "./layout/RootLayout/RootLayout";
 import ErrorPage from "./pages/Error";
-// import HomePage, { loader as movieRecommendationsLoader } from "./pages/Home";
-// import SeriesPage, { loader as tvShowsLoader } from "./pages/Series";
-// import FilmsPage from "./pages/Films";
-// import LatestPage from "./pages/Latest";
-// import MyListPage from "./pages/MyList";
-// import SearchPage, { loader as searchLoader } from "./pages/Search";
+
+// Test Code: Manually & with automated tests
+// Optimize Code: Optimize user experience & performance
+// Build App: Run build process to parse, transform & optimize code
+// Upload App: Upload production code to hosting server
+// Configure Project for Deployment: Ensure app is served securely & as intended
 
 const HomePage = lazy(() => import("./pages/Home"));
 const SeriesPage = lazy(() => import("./pages/Series"));
@@ -18,11 +17,18 @@ const LatestPage = lazy(() => import("./pages/Latest"));
 const MyListPage = lazy(() => import("./pages/MyList"));
 const SearchPage = lazy(() => import("./pages/Search"));
 
-// Test Code: Manually & with automated tests
-// Optimize Code: Optimize user experience & performance
-// Build App: Run build process to parse, transform & optimize code
-// Upload App: Upload production code to hosting server
-// Configure Project for Deployment: Ensure app is served securely & as intended
+const LoadingFallback = () => (
+  <div
+    style={{
+      minHeight: "100vh",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+    }}
+  >
+    <p>Loading...</p>
+  </div>
+);
 
 const router = createBrowserRouter([
   {
@@ -33,7 +39,7 @@ const router = createBrowserRouter([
       {
         index: true,
         element: (
-          <Suspense fallback={<p>Loading...</p>}>
+          <Suspense fallback={<LoadingFallback />}>
             <HomePage />
           </Suspense>
         ),
@@ -42,7 +48,7 @@ const router = createBrowserRouter([
       {
         path: "series",
         element: (
-          <Suspense fallback={<p>Loading...</p>}>
+          <Suspense fallback={<LoadingFallback />}>
             <SeriesPage />
           </Suspense>
         ),
@@ -52,7 +58,7 @@ const router = createBrowserRouter([
       {
         path: "films",
         element: (
-          <Suspense fallback={<p>Loading...</p>}>
+          <Suspense fallback={<LoadingFallback />}>
             <FilmsPage />
           </Suspense>
         ),
@@ -61,7 +67,7 @@ const router = createBrowserRouter([
       {
         path: "latest",
         element: (
-          <Suspense fallback={<p>Loading...</p>}>
+          <Suspense fallback={<LoadingFallback />}>
             <LatestPage />
           </Suspense>
         ),
@@ -69,7 +75,7 @@ const router = createBrowserRouter([
       {
         path: "myList",
         element: (
-          <Suspense fallback={<p>Loading...</p>}>
+          <Suspense fallback={<LoadingFallback />}>
             <MyListPage />
           </Suspense>
         ),
@@ -77,7 +83,7 @@ const router = createBrowserRouter([
       {
         path: "search",
         element: (
-          <Suspense fallback={<p>Loading...</p>}>
+          <Suspense fallback={<LoadingFallback />}>
             <SearchPage />
           </Suspense>
         ),
