@@ -1,9 +1,7 @@
 import axios, { AxiosInstance } from "axios";
 import { MoviesResult, Movie } from "../models/Movie";
 import { Result } from "./Result";
-
-const BASE_URL = "https://api.themoviedb.org/3";
-const API_KEY = "6162435e6c2e71b5828eef6cb250fc6f";
+import { BASE_URL, API_KEY } from "../../config/app.ts";
 
 class ApiManager {
   public static shared = new ApiManager();
@@ -57,8 +55,8 @@ class ApiManager {
 
   async search(query: string): Promise<Result<MoviesResult>> {
     const requestUrls = [
-      `search/movie?query=${query}`,
-      `search/tv?query=${query}`,
+      `/search/movie?query=${query}`,
+      `/search/tv?query=${query}`,
     ];
 
     try {
